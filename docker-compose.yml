@@ -1,0 +1,29 @@
+version: '3'
+
+services:
+
+  sagas.service.a:
+    image: sagas.service.a
+    build:
+      context: .
+      dockerfile: Sagas.Service.A/Dockerfile
+    depends_on:
+      - message-bus
+
+  sagas.service.b:
+    image: sagas.service.b
+    build:
+      context: .
+      dockerfile: Sagas.Service.B/Dockerfile
+    depends_on:
+          - message-bus
+
+  message-bus:
+    image: rabbitmq:3-management
+    ports:
+      - "8080:15672"
+      - "5672:5672"
+
+    environment:
+      - RABBITMQ_DEFAULT_USER=user
+      - RABBITMQ_DEFAULT_PASS=1234
